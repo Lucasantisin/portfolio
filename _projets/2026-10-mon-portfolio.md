@@ -24,10 +24,11 @@ Seul, en salle de formation. Un compte GitHub gratuit, le modèle de portfolio d
 
 ## Productions et preuves
 
-- L'adresse publique du site.
-- Le dépôt et son historique des modifications.
-- Le score d'accessibilité relevé.
+- https://lucasantisin.github.io/portfolio/
+- <img width="982" height="507" alt="image" src="https://github.com/user-attachments/assets/ef1a3044-b3ef-4e30-93e8-7e4db1689fbd" />
+- <img width="1782" height="1015" alt="image" src="https://github.com/user-attachments/assets/7ce07d48-5c27-4499-ab79-1c0dd76ec40d" />
+
 
 ## Ce que j'en retiens
 
-Remplacez cette phrase par une difficulté rencontrée et la façon dont vous l'avez réglée.
+Lighthouse n'est pas si simple a trouver et donner un prompt a une IA pour modifier l'apparence du site n'est pas si simple il faut être précis.
