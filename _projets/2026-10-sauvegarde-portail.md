@@ -1,23 +1,22 @@
 ---
-title: "Intitulé du projet"
+title: "Site internet"
 date: 2026-10-07
 cadre: "Atelier de professionnalisation"
-resume: "Une phrase : ce que vous avez fait, et pour qui."
-competences: [c2]
+resume: "Création d'un site internet"
+competences: [c3, c4]
 ---
 
 ## Contexte
 
-Qui a demandé quoi, dans quelle organisation, et pourquoi c'était nécessaire.
+Le formateur a demandé a crée un site internet avec un script et une action ( un bouton) pour comprendre son fonctionnement
 
 ## Conditions et moyens
 
-Le matériel, les logiciels, seul ou en équipe.
+Création d'un site internet via mon ordinateur personnel en duo, a l'aide de DS code 
 
 ## Description de l'activité
 
-1. Première étape, avec la commande ou le réglage réellement employé.
-2. Deuxième étape.
+Création d'un script avec script.js, index.html et style.css
 
 ## Productions et preuves
 
@@ -25,4 +24,4 @@ Le matériel, les logiciels, seul ou en équipe.
 
 ## Ce que j'en retiens
 
-Une difficulté rencontrée et la façon dont vous l'avez réglée.
+Problème avec une ligne de code, le script s'effecutait avant la fin donc le bouton ne marchait pas.
