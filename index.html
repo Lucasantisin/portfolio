@@ -1,34 +1,200 @@
----
-layout: default
----
-<h1>{{ site.title }}</h1>
-<p class="sous-titre">{{ site.description }}</p>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ton Nom — Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
 
-<h2>Profil</h2>
-<p>Je suis quelqu'un de dévoué quand j'entreprends quelque chose, qui ne s'arrête pas tant qu'il n'a pas eu ce qu'il voulait, méthodique discipliné et patient, je sais très bien me servir des outils Office et je sais remplacer le hardware défaillant ou non. Je cherche a être DevOps et je cherche une alternance de 1ère année de BTS SIO SISR.</p>
+<div class="rig" id="rig">
+  <canvas id="space" aria-hidden="true"></canvas>
 
-{% assign projets = site.projets | sort: "date" | reverse %}
+  <!-- fond lointain : éclipse (Projets), aurore boréale (À propos), petites planètes -->
+  <div class="l" data-f=".35" aria-hidden="true">
+    <div class="it ecl" style="--sx:-1;--sy:-1;--ox:56vw;--oy:9vh"><div class="sun"></div><div class="mn"></div></div>
+    <div class="it limb" style="--sx:1;--sy:-.8;--ox:-35vw;--oy:62vh"></div>
+    <div class="it au" style="--sx:1;--sy:-.8;--ox:22vw;--oy:8vh;--c:#34d399"></div>
+    <div class="it au" style="--sx:1;--sy:-.8;--ox:40vw;--oy:5vh;--c:#38bdf8;animation-delay:-2s"></div>
+    <div class="it au" style="--sx:1;--sy:-.8;--ox:58vw;--oy:9vh;--c:#a78bfa;animation-delay:-4s"></div>
+    <div class="it au" style="--sx:1;--sy:-.8;--ox:76vw;--oy:6vh;--c:#f472b6;animation-delay:-1s"></div>
+    <div class="it pl pink" style="--sx:-.45;--sy:.45;--ox:30vw;--oy:20vh"></div>
+    <div class="it pl teal" style="--sx:.9;--sy:.55;--ox:50vw;--oy:40vh"></div>
+  </div>
 
-<h2 id="projets">Projets ({{ projets.size }})</h2>
-{% for p in projets %}
-<article class="carte">
-  <h3><a href="{{ p.url | relative_url }}">{{ p.title }}</a></h3>
-  <p>{{ p.resume }}</p>
-  <p class="meta">{{ p.date | date: "%m/%Y" }} · {{ p.cadre }}</p>
-</article>
-{% endfor %}
+  <!-- plan proche : planète d'accueil + lune, géante gazeuse à anneaux (Contact) -->
+  <div class="l" data-f=".7" aria-hidden="true">
+    <div class="it pl home" style="--sx:0;--sy:0;--ox:58vw;--oy:32vh"><i></i></div>
+    <div class="it pl moon" style="--sx:0;--sy:0;--ox:52vw;--oy:18vh"><i></i></div>
+    <div class="it sys" style="--sx:.35;--sy:1;--ox:50vw;--oy:24vh">
+      <div class="ring"></div><div class="pl gas"><i></i></div><div class="ring fr"></div>
+    </div>
+  </div>
 
-<h2 id="competences">Compétences du bloc 1</h2>
-<p>Chaque croix renvoie au projet qui la prouve. Le tableau se remplit tout seul à chaque projet ajouté.</p>
-<div class="defile">
-<table>
-  <thead>
-    <tr><th scope="col">Compétence</th>{% for p in projets %}<th scope="col"><a href="{{ p.url | relative_url }}">P{{ forloop.rindex }}</a></th>{% endfor %}</tr>
-  </thead>
-  <tbody>
-  {% for c in site.data.competences %}
-    <tr><th scope="row">{{ c.libelle }}</th>{% for p in projets %}<td class="case">{% if p.competences contains c.code %}<a href="{{ p.url | relative_url }}" aria-label="{{ c.libelle }} : {{ p.title }}">X</a>{% endif %}</td>{% endfor %}</tr>
-  {% endfor %}
-  </tbody>
-</table>
+  <!-- contenu -->
+  <div class="l" data-f="1">
+    <section class="panel" id="accueil" role="tabpanel">
+      <div class="inner hero">
+        <h1><span class="line"><span>Je crée</span></span><span class="line"><span>des projets.</span></span></h1>
+        <p class="lead"><b>Étudiant en informatique.</b> Je conçois, développe et publie des projets web et logiciels. Voici ce que j'ai construit jusqu'ici.</p>
+        <div class="chips"><span>Python</span><span>JavaScript</span><span>Java</span><span>SQL</span></div>
+      </div>
+    </section>
+    <section class="panel" id="projets" role="tabpanel">
+      <div class="inner"><h2>Projets</h2><div class="list" id="list"></div></div>
+    </section>
+    <section class="panel" id="apropos" role="tabpanel">
+      <div class="inner">
+        <h2>À propos</h2>
+        <div class="cols">
+          <div>
+            <p>Je suis étudiant en informatique, passionné par la construction d'interfaces et d'outils utiles.</p>
+            <p class="m">Remplace ce texte par ton parcours, ce que tu cherches (stage, alternance…) et ce qui te motive.</p>
+          </div>
+          <ul class="skills">
+            <li><span>Langages</span><span>Python, JavaScript, Java</span></li>
+            <li><span>Web</span><span>HTML, CSS, React</span></li>
+            <li><span>Outils</span><span>Git, Linux, SQL</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+    <section class="panel" id="contact" role="tabpanel">
+      <div class="inner">
+        <h2>Contact</h2>
+        <a class="mail" href="mailto:ton@email.fr">ton@email.fr</a>
+        <div class="links">
+          <a href="https://github.com/ton-pseudo" target="_blank" rel="noopener">GitHub</a>
+          <a href="https://www.linkedin.com/in/ton-profil" target="_blank" rel="noopener">LinkedIn</a>
+        </div>
+      </div>
+    </section>
+  </div>
 </div>
+
+<aside class="side">
+  <a class="logo" href="#accueil">Ton Nom</a>
+  <nav class="tabs" role="tablist" aria-label="Navigation">
+    <button class="tab" role="tab" data-p="accueil">Accueil</button>
+    <button class="tab" role="tab" data-p="projets">Projets</button>
+    <button class="tab" role="tab" data-p="apropos">À propos</button>
+    <button class="tab" role="tab" data-p="contact">Contact</button>
+  </nav>
+  <small>Étudiant en informatique<br><a href="https://github.com/ton-pseudo" target="_blank" rel="noopener">GitHub</a></small>
+</aside>
+<div class="dot" aria-hidden="true"></div>
+
+<script>
+/* ===== À MODIFIER : tes projets ===== */
+const PROJECTS = [
+  {t:"Nom du projet 1", d:"Courte description : ce que ça fait et pourquoi.", s:"Python · Flask", y:"2026", u:"https://github.com/ton-pseudo/projet-1"},
+  {t:"Nom du projet 2", d:"Courte description : ce que ça fait et pourquoi.", s:"JavaScript · React", y:"2026", u:"https://github.com/ton-pseudo/projet-2"},
+  {t:"Nom du projet 3", d:"Courte description : ce que ça fait et pourquoi.", s:"Java", y:"2025", u:"https://github.com/ton-pseudo/projet-3"}
+];
+/* ===== Position de chaque scène dans l'espace (en écrans : x vers la droite, y vers le bas) ===== */
+const SC = {accueil:[0,0], projets:[-1,-1], apropos:[1,-.8], contact:[.35,1]};
+
+const esc = s => s.replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const list = document.getElementById('list');
+list.innerHTML = PROJECTS.map(p => `
+  <a class="row" href="${esc(p.u)}" target="_blank" rel="noopener">
+    <div><h3>${esc(p.t)}</h3><span class="stack">${esc(p.s)}</span></div>
+    <p>${esc(p.d)}</p><span class="yr">${esc(p.y)}</span>
+  </a>`).join('');
+list.addEventListener('mousemove', e => {
+  const r = e.target.closest('.row'); if(!r) return;
+  r.style.setProperty('--mx', (e.clientX - r.getBoundingClientRect().left) + 'px');
+});
+
+/* ===== Caméra ===== */
+const rig = document.getElementById('rig');
+const layers = [...document.querySelectorAll('.l')];
+layers.forEach(l => l.style.setProperty('--f', l.dataset.f));
+const panels = Object.fromEntries([...document.querySelectorAll('.panel')].map(p => {
+  p.style.setProperty('--sx', SC[p.id][0]); p.style.setProperty('--sy', SC[p.id][1]); p.inert = true; return [p.id, p];
+}));
+const tabs = [...document.querySelectorAll('.tab')];
+const calm = matchMedia('(prefers-reduced-motion:reduce)').matches;
+const cam = {x:0, y:0}, mouse = {x:0, y:0}, mt = {x:0, y:0};
+let roll = 0, zoom = 1, fl = null, current = null, last = '';
+
+/* étoiles en 3 plans de profondeur, avec traînées pendant les déplacements */
+const cv = document.getElementById('space'), g = cv.getContext('2d');
+let W, H;
+function size(){ const D = Math.min(devicePixelRatio || 1, 2); W = innerWidth; H = innerHeight; cv.width = W*D; cv.height = H*D; g.setTransform(D,0,0,D,0,0); }
+size(); addEventListener('resize', size);
+const R = Math.random;
+const T = [[.07,140,.9],[.16,90,1.3],[.3,45,1.9]].map(([f,n,r]) => ({f, r, s:[...Array(n)].map(() => ({x:R(), y:R(), a:.3+R()*.7, p:R()*6}))}));
+function stars(t, vx, vy){
+  g.clearRect(0,0,W,H); g.lineCap = 'round';
+  const fast = Math.hypot(vx, vy) > 6;
+  for(const L of T) for(const s of L.s){
+    const x = (((s.x*W - cam.x*L.f - mouse.x*L.f*20) % W) + W) % W, y = (((s.y*H - cam.y*L.f - mouse.y*L.f*20) % H) + H) % H;
+    g.globalAlpha = s.a * (.65 + .35*Math.sin(t/900 + s.p));
+    g.fillStyle = g.strokeStyle = s.p > 4.2 ? '#f0abfc' : s.p > 2.4 ? '#bae6fd' : '#fff';
+    const r = L.r * (.5 + s.a/2);
+    if(fast){ g.lineWidth = r*1.4; g.beginPath(); g.moveTo(x,y); g.lineTo(x + vx*L.f*1.6, y + vy*L.f*1.6); g.stroke(); }
+    else { g.beginPath(); g.arc(x,y,r,0,7); g.fill(); }
+  }
+  g.globalAlpha = 1;
+}
+
+let px = 0, py = 0;
+function loop(t){
+  if(fl){
+    const p = Math.min(1, (t - fl.t0) / fl.d), e = p < .5 ? 4*p*p*p : 1 - Math.pow(-2*p + 2, 3) / 2, b = Math.sin(Math.PI * p);
+    cam.x = fl.x0 + fl.dx*e; cam.y = fl.y0 + fl.dy*e;
+    roll = -b * fl.r; zoom = 1 - .08*b;               /* la caméra penche et recule en voyageant */
+    if(p > .55 && !fl.sw){ fl.sw = 1; arrive(fl.id); }
+    if(p >= 1){ fl = null; roll = 0; zoom = 1; }
+  }
+  mouse.x += (mt.x - mouse.x) * .05; mouse.y += (mt.y - mouse.y) * .05;
+  for(const l of layers){
+    const f = +l.dataset.f, m = f < 1 ? f*28 : 0;
+    l.style.transform = `translate3d(${-cam.x*f - mouse.x*m}px,${-cam.y*f - mouse.y*m}px,0)`;
+  }
+  rig.style.transform = `rotate(${roll}deg) scale(${zoom})`;
+  stars(t, cam.x - px, cam.y - py); px = cam.x; py = cam.y;
+  requestAnimationFrame(loop);
+}
+
+function arrive(id){
+  if(current){ panels[current].classList.remove('on'); panels[current].inert = true; }
+  const p = panels[id]; p.inert = false; p.scrollTop = 0; p.classList.add('on');
+  tabs.forEach(t => t.setAttribute('aria-selected', t.dataset.p === id));
+  current = id;
+}
+function go(id, push = true){
+  if(!SC[id] || id === current || (fl && fl.id === id)) return;
+  if(push){ try{ history.replaceState(null, '', '#' + id); }catch(e){} }
+  const tx = SC[id][0]*innerWidth, ty = SC[id][1]*innerHeight;
+  if(calm || !current){ cam.x = tx; cam.y = ty; arrive(id); return; }
+  const dx = tx - cam.x, dy = ty - cam.y, dist = Math.hypot(dx, dy) / Math.hypot(innerWidth, innerHeight);
+  fl = {id, x0:cam.x, y0:cam.y, dx, dy, t0:performance.now(), d:1100 + Math.min(dist, 1.6)*700,
+        r:Math.max(-4, Math.min(4, dx/innerWidth*3 + dy/innerHeight*2)), sw:0};
+}
+tabs.forEach(t => t.addEventListener('click', () => go(t.dataset.p)));
+document.querySelector('.logo').addEventListener('click', e => { e.preventDefault(); go('accueil'); });
+addEventListener('hashchange', () => go(location.hash.slice(1), false));
+addEventListener('keydown', e => {
+  const i = tabs.findIndex(t => t.dataset.p === current);
+  if(e.key === 'ArrowDown' && tabs[i+1]) go(tabs[i+1].dataset.p);
+  if(e.key === 'ArrowUp' && tabs[i-1]) go(tabs[i-1].dataset.p);
+});
+addEventListener('mousemove', e => {
+  mt.x = e.clientX/innerWidth - .5; mt.y = e.clientY/innerHeight - .5;
+  const dot = document.querySelector('.dot');
+  dot.style.transform = `translate(${e.clientX-7}px,${e.clientY-7}px)`;
+  dot.classList.toggle('big', !!e.target.closest('a,button'));
+});
+addEventListener('resize', () => { if(!fl && current){ cam.x = SC[current][0]*innerWidth; cam.y = SC[current][1]*innerHeight; } });
+
+go(SC[location.hash.slice(1)] ? location.hash.slice(1) : 'accueil', false);
+requestAnimationFrame(loop);
+</script>
+</body>
+</html>
