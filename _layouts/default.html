@@ -7,28 +7,39 @@
   <meta name="description" content="{{ page.resume | default: site.description }}">
   <link rel="stylesheet" href="{{ '/css/style.css' | relative_url }}">
 </head>
-<body>
-  <div class="decor" aria-hidden="true">
-    <canvas id="espace"></canvas>
-    <div class="neb"><i></i><i></i><i></i></div>
-    <div class="ecl" data-f=".03"><div class="sun"></div><div class="mn"></div></div>
-    <div class="pl home" data-f=".05"><i></i></div>
-    <div class="pl moon" data-f=".08"><i></i></div>
-    <div class="limb"></div>
-    <div class="au" style="--c:#34d399;left:12vw"></div>
-    <div class="au" style="--c:#38bdf8;left:32vw;animation-delay:-2s"></div>
-    <div class="au" style="--c:#a78bfa;left:52vw;animation-delay:-4s"></div>
-    <div class="au" style="--c:#f472b6;left:70vw;animation-delay:-1s"></div>
+<body data-pose="{% if page.url == '/' %}accueil{% elsif page.collection == 'projets' %}projet{% else %}mentions{% endif %}">
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <symbol id="ph" viewBox="0 0 100 260">
+      <path d="M50 4L58 12L68 8L64 20L72 26L62 32L64 42L50 38L36 42L38 32L28 26L36 20L32 8L42 12Z"/>
+      <path d="M34 46L66 46L82 120L92 210L70 206L66 150L62 258L52 258L50 190L48 258L38 258L34 150L30 206L8 210L18 120Z"/>
+      <path fill="#fff" d="M40 24L47 27L45 30L38 28ZM60 24L53 27L55 30L62 28Z"/>
+    </symbol>
+  </svg>
+
+  <div class="scene" aria-hidden="true">
+    <div class="cam">
+      <div class="lights"></div>
+      <div class="train"></div>
+      <div class="floor"></div>
+      <div class="band"></div>
+      <svg class="fig f1" viewBox="0 0 100 260"><use href="#ph"/></svg>
+      <svg class="fig f2" viewBox="0 0 100 260"><use href="#ph"/></svg>
+      <svg class="fig f3" viewBox="0 0 100 260"><use href="#ph"/></svg>
+      <svg class="fig f4" viewBox="0 0 100 260"><use href="#ph"/></svg>
+      <svg class="fig f0" viewBox="0 0 100 260"><use href="#ph"/></svg>
+    </div>
+    <div class="dots"></div>
+    <div class="vig"></div>
   </div>
 
   <header class="barre">
     <p class="site"><a href="{{ '/' | relative_url }}">{{ site.title }}</a></p>
     <nav aria-label="Menu principal">
       <ul>
-        <li><a href="{{ '/' | relative_url }}" data-s="accueil"{% if page.url == '/' %} aria-current="true"{% endif %}>Accueil</a></li>
-        <li><a href="{{ '/' | relative_url }}#projets" data-s="projets"{% if page.collection == 'projets' %} aria-current="true"{% endif %}>Projets</a></li>
+        <li><a href="{{ '/' | relative_url }}" data-s="accueil">Accueil</a></li>
+        <li><a href="{{ '/' | relative_url }}#projets" data-s="projets">Projets</a></li>
         <li><a href="{{ '/' | relative_url }}#competences" data-s="competences">Compétences</a></li>
-        <li><a href="{{ '/mentions-legales/' | relative_url }}"{% if page.url contains 'mentions-legales' %} aria-current="true"{% endif %}>Mentions légales</a></li>
+        <li><a href="{{ '/mentions-legales/' | relative_url }}" data-s="mentions">Mentions légales</a></li>
       </ul>
     </nav>
   </header>
@@ -41,48 +52,68 @@
     <p>{% if site.email != "" %}<a href="mailto:{{ site.email }}">{{ site.email }}</a> · {% endif %}{% if site.linkedin != "" %}<a href="{{ site.linkedin }}">LinkedIn</a> · {% endif %}contenu sous licence <a href="https://creativecommons.org/licenses/by/4.0/deed.fr">CC BY 4.0</a> · <a href="{{ '/mentions-legales/' | relative_url }}">mentions légales</a></p>
   </footer>
 
+  <div class="wipe" aria-hidden="true"><i class="a"></i><i class="b"></i><i class="c"></i></div>
+
   <script>
   (function () {
-    var cv = document.getElementById('espace'), g = cv.getContext('2d'), W, H, sy = 0, cur = 0;
-    var calm = matchMedia('(prefers-reduced-motion:reduce)').matches;
-    function size() { var D = Math.min(devicePixelRatio || 1, 2); W = innerWidth; H = innerHeight; cv.width = W * D; cv.height = H * D; g.setTransform(D, 0, 0, D, 0, 0); }
-    size(); addEventListener('resize', size);
-    var T = [[.05, 110, .9], [.12, 70, 1.3], [.22, 35, 1.9]].map(function (a) {
-      var s = []; for (var i = 0; i < a[1]; i++) s.push({ x: Math.random(), y: Math.random(), a: .3 + Math.random() * .7, p: Math.random() * 6 });
-      return { f: a[0], r: a[2], s: s };
-    });
-    var layers = [].slice.call(document.querySelectorAll('[data-f]'));
-    function draw(t) {
-      cur = calm ? sy : cur + (sy - cur) * .08;
-      g.clearRect(0, 0, W, H);
-      T.forEach(function (L) {
-        L.s.forEach(function (s) {
-          var y = ((s.y * H - cur * L.f) % H + H) % H;
-          g.globalAlpha = s.a * (.65 + .35 * Math.sin(t / 900 + s.p));
-          g.fillStyle = s.p > 4.2 ? '#f0abfc' : s.p > 2.4 ? '#bae6fd' : '#fff';
-          g.beginPath(); g.arc(s.x * W, y, L.r * (.5 + s.a / 2), 0, 7); g.fill();
-        });
-      });
-      g.globalAlpha = 1;
-      layers.forEach(function (l) { l.style.transform = 'translate3d(0,' + (-cur * l.dataset.f) + 'px,0)'; });
-      if (!calm) requestAnimationFrame(draw);
-    }
-    addEventListener('scroll', function () { sy = scrollY; if (calm) draw(0); }, { passive: true });
-    requestAnimationFrame(draw);
+    var body = document.body, calm = matchMedia('(prefers-reduced-motion:reduce)').matches;
+    var tabs = [].slice.call(document.querySelectorAll('nav a[data-s]'));
+    var w = document.querySelector('.wipe'), busy = false, curPath = location.pathname;
+    var map = { accueil: 'accueil', projets: 'projets', competences: 'competences', projet: 'projets', mentions: 'mentions' };
 
-    /* onglet actif selon la section visible (page d'accueil seulement) */
-    if (document.getElementById('projets')) {
-      var tabs = [].slice.call(document.querySelectorAll('nav a[data-s]'));
-      var upd = function () {
-        var k = 'accueil';
-        ['projets', 'competences'].forEach(function (id) {
-          var e = document.getElementById(id);
-          if (e && e.getBoundingClientRect().top < innerHeight * .4) k = id;
-        });
-        tabs.forEach(function (a) { if (a.dataset.s === k) a.setAttribute('aria-current', 'true'); else a.removeAttribute('aria-current'); });
-      };
-      addEventListener('scroll', upd, { passive: true }); upd();
+    /* titre façon lettres découpées */
+    var logo = document.querySelector('.site a'), txt = logo.textContent.trim();
+    logo.setAttribute('aria-label', txt); logo.textContent = '';
+    txt.split('').forEach(function (c) {
+      var s = document.createElement('span');
+      if (c === ' ') s.className = 'sp'; else { s.className = 'rl'; s.textContent = c; s.setAttribute('aria-hidden', 'true'); }
+      logo.appendChild(s);
+    });
+
+    /* pose de caméra + onglet actif */
+    function setPose(p) {
+      if (body.dataset.pose !== p) body.dataset.pose = p;
+      tabs.forEach(function (a) { if (a.dataset.s === map[p]) a.setAttribute('aria-current', 'true'); else a.removeAttribute('aria-current'); });
     }
+    function track() {
+      if (!document.getElementById('projets')) return;
+      var k = 'accueil';
+      ['projets', 'competences'].forEach(function (id) {
+        var e = document.getElementById(id);
+        if (e && e.getBoundingClientRect().top < innerHeight * .45) k = id;
+      });
+      setPose(k);
+    }
+    addEventListener('scroll', track, { passive: true });
+    setPose(body.dataset.pose); track();
+
+    /* changement de page : rideaux rouge/noir/blanc pendant que la caméra bouge */
+    function wait(ms) { return new Promise(function (r) { setTimeout(r, ms); }); }
+    async function go(url, push) {
+      if (busy) return; busy = true;
+      w.className = 'wipe on'; await wait(650);
+      try {
+        var res = await fetch(url, { credentials: 'same-origin' });
+        if (!res.ok) throw 0;
+        var doc = new DOMParser().parseFromString(await res.text(), 'text/html');
+        var m = doc.querySelector('main'); if (!m) throw 0;
+        document.querySelector('main').innerHTML = m.innerHTML;
+        document.title = doc.title;
+        if (push) { try { history.pushState(null, '', url); } catch (e) {} }
+        var u = new URL(url, location.href); curPath = u.pathname;
+        scrollTo(0, 0); setPose(doc.body.dataset.pose);
+        if (u.hash) { var t = document.getElementById(u.hash.slice(1)); if (t) t.scrollIntoView(); }
+      } catch (e) { location.href = url; return; }
+      w.className = 'wipe out'; await wait(700); w.className = 'wipe'; busy = false; track();
+    }
+    document.addEventListener('click', function (e) {
+      if (calm || e.defaultPrevented || e.button || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      var a = e.target.closest('a'); if (!a || a.target || a.hasAttribute('download')) return;
+      var u = new URL(a.href, location.href); if (u.origin !== location.origin) return;
+      if (u.pathname === location.pathname) { if (!u.hash) { e.preventDefault(); scrollTo({ top: 0, behavior: 'smooth' }); } return; }
+      e.preventDefault(); go(u.href, true);
+    });
+    addEventListener('popstate', function () { if (location.pathname !== curPath) go(location.href, false); });
   })();
   </script>
 </body>
